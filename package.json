@@ -1,0 +1,44 @@
+{
+  "name": "generator-test",
+  "version": "0.0.0",
+  "description": "A custom template for generators built with Yeoman",
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "homepage": "https://github.com/ajthor/generator-test",
+  "bugs": "https://github.com/ajthor/generator-test/issues",
+  "author": {
+    "name": "Adam Thorpe",
+    "email": "adam.thorpe.g@gmail.com",
+    "url": "https://github.com/ajthor"
+  },
+  "main": "app/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ajthor/generator-test.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "yeoman-generator": "~0.13.0",
+    "async": "~0.2.9",
+    "lodash": "~2.2.1",
+    "cheerio": "~0.12.3"
+  },
+  "devDependencies": {
+    "mocha": "~1.12.0"
+  },
+  "peerDependencies": {
+    "yo": ">=1.0.0-rc.1"
+  },
+  "engines": {
+    "node": ">=0.8.0",
+    "npm": ">=1.2.10"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
+}
