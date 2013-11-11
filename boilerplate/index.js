@@ -1,7 +1,7 @@
 'use strict';
 var util = require('util');
 var path = require('path');
-var GeneratorMain = require('./lib/generator-main.js');
+var GeneratorMain = require('../lib/generator-main.js');
 
 var _ = require('lodash');
 
@@ -15,22 +15,11 @@ util.inherits(Generator, GeneratorMain);
 Generator.prototype.setDirectories = function setDirectories() {
 	// Set default directory structure.
 	this.dir = {
-		// Public directories.
-		// NOTE: If you want to rename the variables, be sure to modify: 
-		// the 3 generators, generator-base, and the templates.
-		public:         "public",
-		// Other directories.
-		config:         "config",
-		test:           "test",
-		build:          "build",
+		test:           "test"
 	};
 
 	this.dir = _.extend(this.dir, {
-		images:         path.join(this.dir.public, "/images"),
-		styles:         path.join(this.dir.public, "/styles"),
-		scripts:        path.join(this.dir.public, "/scripts"),
-		vendor:         path.join(this.dir.public, "/scripts/vendor"),
-		views:          path.join(this.dir.public, "/views"),
+		mocks:          path.join(this.dir.test, "/mocks")
 	});
 	// Set 'development' directories.
 	this.dev = {
@@ -55,11 +44,6 @@ Generator.prototype.saveConfiguration = function saveConfiguration() {
 	this.config.set("dev", this.dev);
 	// Force save so that it can be used in the next generator.
 	this.config.forceSave();
-};
-
-Generator.prototype.copyBoilerplateFiles = function copyBoilerplateFiles() {
-	// Copy entire boilerplate template folder to the destination directory.
-	this.directory(this.dev.boilerplate, this.destinationRoot());
 };
 
 

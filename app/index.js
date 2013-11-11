@@ -32,7 +32,7 @@ var Generator = module.exports = function Generator(args, options, config) {
 
 };
 
-util.inherits(TemplateGenerator, yeoman.generators.Base);
+util.inherits(Generator, yeoman.generators.Base);
 
 Generator.prototype.askFor = function askFor() {
 	// If the argument 'dont-ask' was set, return.
@@ -44,25 +44,66 @@ Generator.prototype.askFor = function askFor() {
 	var done = this.async();
 
 	var prompts = [{
+		type: 'confirm',
+		name: 'node',
+		message: "Do you want to run node unit tests as well?",
+		default: false
+	}, {
+		type: 'list',
+		name: 'engine',
+		message: "What testing engine do you want to use?",
+		choices: [
+		{
+			name: 'Jasmine',
+			value: 'jasmine'
+		}, {
+			name: 'Mocha',
+			value: 'mocha'
+		}]
+	}, {
 		type: 'checkbox',
 		name: 'components',
-		message: "What else would you like?",
+		message: "What other components do you want to add?",
 		choices: [
 		// Add new component choices here in this array.
 		// 'value' is the name of the library to include in the bower config file.
 		{
-			name: 'RequireJS Support',
-			value: 'requirejs',
-			checked: true
+			name: 'Karma',
+			value: ['karma']
+		}, {
+			name: 'Chai (Assertions Library)',
+			value: ['chai']
+		}, {
+			name: 'Istanbul (Code Coverage)',
+			value: 'istanbul'
 		}]
 	}];
 
 	this.prompt(prompts, function (results) {
 		// Set components to an empty array.
 		this.components = [];
+		// Add testing engine.
+		if(results.engine === 'jasmine') {
+			this.components.push('grunt-contrib-jasmine');
+			if(results.node === true) {
+				this.components.push('jasmine-node');
+				this.components.push('grunt-jasmine-node');
+			}
+		} else {
+			// Mocha
+			this.components.push('mocha');
+			this.components.push('grunt-mocha');
+			if(results.components.indexOf('istanbul') !== -1) {
+				this.components.push('mocha-istanbul');
+				this.components.push('grunt-mocha-istanbul');
+			}
+		}
 		// Add components which the user selected.
 		_.each(results.components, function (component) {
-			this.components.push(component);
+			if(_.isArray(component)) {
+				this.components = _.union(this.components, component);
+			}
+			else this.components.push(component);
 		}, this);
 		// And send the components to the configuration file.
 		this.config.set("components", this.components);
